@@ -1,7 +1,7 @@
 terraform {
   backend "remote" {
     hostname = "app.terraform.io"
-    organization = "hashicorp-team-da-beta"
+    organization = "niccorp"
 
     workspaces {
       name = "demo-consul-cloud-map"
