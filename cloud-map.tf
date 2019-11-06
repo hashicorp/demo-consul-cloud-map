@@ -1,7 +1,7 @@
 resource "aws_service_discovery_private_dns_namespace" "example" {
   name        = "example.terraform.local"
   description = "example"
-  vpc         = "${aws_vpc.example.id}"
+  vpc         = aws_default_vpc.default.id
 }
 
 resource "aws_service_discovery_service" "example" {
