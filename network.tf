@@ -8,7 +8,7 @@ resource "aws_security_group_rule" "allow_consul" {
   type            = "ingress"
   from_port       = 8500
   to_port         = 8500
-  protocol        = "http"
+  protocol        = "tcp"
   cidr_blocks     = ["0.0.0.0/0"]
 
   security_group_id = aws_default_vpc.default.default_security_group_id
