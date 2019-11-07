@@ -15,9 +15,10 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_instance" "web" {
-  ami           = "${data.aws_ami.ubuntu.id}"
+  ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
-
+  
+  subnet_id     = aws_default_subnet.default_az1.id
   vpc_security_group_ids = [aws_default_vpc.default.default_security_group_id]
 
   tags = {

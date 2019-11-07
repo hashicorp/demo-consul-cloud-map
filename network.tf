@@ -13,3 +13,11 @@ resource "aws_security_group_rule" "allow_consul" {
 
   security_group_id = aws_default_vpc.default.default_security_group_id
 }
+
+resource "aws_default_subnet" "default_az1" {
+  availability_zone = "us-east-1a"
+
+  tags = {
+    Name = "Default subnet for us-east-1a"
+  }
+}
