@@ -41,23 +41,16 @@ retry_join = ["${consul_cluster_addr}"]
 EOF
 
 # Create config and register service
-cat << EOF > /etc/consul/config/api.json
+cat << EOF > /etc/consul/config/payments.json
 {
   "service": {
-    "name": "api",
-    "id":"api-vms",
+    "name": "payments",
+    "id":"payments-vms",
     "port": 9090,
     "connect": { 
       "sidecar_service": {
         "port": 20000,
         "proxy": {
-          "upstreams": [
-            {
-              "destination_name": "payments",
-              "local_bind_address": "127.0.0.1",
-              "local_bind_port": 9091
-            }
-          ]
         }
       }
     }  
@@ -86,7 +79,7 @@ cat << EOF > /etc/systemd/system/consul-envoy.service
 Description=Consul Envoy
 After=syslog.target network.target
 [Service]
-ExecStart=/usr/local/bin/consul connect envoy -sidecar-for api-vms
+ExecStart=/usr/local/bin/consul connect envoy -sidecar-for payments-vms
 ExecStop=/bin/sleep 5
 Restart=always
 [Install]
@@ -95,15 +88,14 @@ EOF
 
 chmod 644 /etc/systemd/system/consul-envoy.service
 
-# Setup systemd API service
-cat << EOF > /etc/systemd/system/api.service
+# Setup systemd Payment service
+cat << EOF > /etc/systemd/system/payments.service
 [Unit]
-Description=API
+Description=Payment
 After=syslog.target network.target
 [Service]
-Environment="MESSAGE=API v1"
-Environment=NAME=API
-Environment=UPSTREAM_URIS=http://localhost:9091
+Environment="MESSAGE=payment successful"
+Environment=NAME=Payment
 ExecStart=/usr/local/bin/fake-service
 ExecStop=/bin/sleep 5
 Restart=always
@@ -111,9 +103,9 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 
-chmod 644 /etc/systemd/system/api.service
+chmod 644 /etc/systemd/system/payments.service
 
 systemctl daemon-reload
 systemctl start consul.service
 systemctl start consul-envoy.service
-systemctl start api.service
+systemctl start payments.service
