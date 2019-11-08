@@ -65,6 +65,7 @@ data "template_file" "consul_server" {
 
   vars = {
     namespace_id = aws_service_discovery_private_dns_namespace.example.id
+    aws_region = "us-east-1"
   }
 }
 

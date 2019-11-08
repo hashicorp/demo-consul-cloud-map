@@ -66,6 +66,7 @@ After=syslog.target network.target
 ExecStart=/usr/local/bin/consul-aws sync-catalog -aws-namespace-id ${namespace_id} -to-aws -to-consul
 ExecStop=/bin/sleep 5
 Restart=always
+Environment="AWS_REGION=${aws_region}"
 [Install]
 WantedBy=multi-user.target
 EOF
