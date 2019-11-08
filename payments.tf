@@ -15,7 +15,7 @@ resource "aws_instance" "payments" {
   subnet_id     = aws_default_subnet.default_az1.id
   associate_public_ip_address = true
 
-  user_data = data.template_file.api.rendered
+  user_data = data.template_file.payments.rendered
 
   tags = {
     Name = "Consul_Server"
