@@ -1,5 +1,3 @@
-#!/bin/bash
-
 apt-get update && apt-get install -y unzip
 
 # Get internal IP
