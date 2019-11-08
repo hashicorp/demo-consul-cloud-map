@@ -52,5 +52,26 @@ EOF
 
 chmod 644 /etc/systemd/system/consul.service
 
+# Add Consul AWS 
+wget https://releases.hashicorp.com/consul-aws/0.1.1/consul-aws_0.1.1_linux_amd64.zip -O consul-aws.zip
+unzip consul-aws.zip
+mv ./consul-aws /usr/local/bin
+
+# Setup system D
+cat << EOF > /etc/systemd/system/consul-aws.service
+[Unit]
+Description=Consul AWS Sync
+After=syslog.target network.target
+[Service]
+ExecStart=/usr/local/bin/consul-aws sync-catalog -aws-namespace-id ${namespace_id} -to-aws -to-consul
+ExecStop=/bin/sleep 5
+Restart=always
+[Install]
+WantedBy=multi-user.target
+EOF
+
+chmod 644 /etc/systemd/system/consul-aws.service
+
 systemctl daemon-reload
 systemctl start consul.service
+systemctl start consul-aws.service
