@@ -52,7 +52,7 @@ EOF
 resource "aws_iam_policy_attachment" "consul_server" {
   name       = "consul-server"
   roles      = [aws_iam_role.consul_server.name]
-  policy_arn = aws_iam_role.consul_server.arn
+  policy_arn = aws_iam_policy.consul_server.arn
 }
 
 resource "aws_iam_instance_profile" "consul_server" {
