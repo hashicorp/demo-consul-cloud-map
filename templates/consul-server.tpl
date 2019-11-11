@@ -8,10 +8,9 @@ LOCAL_IPV4=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
 
 cd /tmp
 
-# Add delve and Go for debugging
+# Add Go for debugging
 wget https://dl.google.com/go/go1.13.4.linux-amd64.tar.gz -O ./go.tar.gz
 tar -C /usr/local -xzf ./go.tar.gz
-GOPATH=/home/ubuntu/go /usr/local/go/bin/go get -u github.com/go-delve/delve/cmd/dlv
 
 ## Add go to the path
 echo "export GOPATH=/home/ubuntu/go" >> /home/ubuntu/.bashrc
