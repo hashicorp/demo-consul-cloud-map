@@ -8,10 +8,14 @@ LOCAL_IPV4=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
 
 cd /tmp
 
-# Add delve for debugging
-wget https://dl.google.com/go/go1.13.4.linux-amd64.tar.gz -o ./go.tar.gz
+# Add delve and Go for debugging
+wget https://dl.google.com/go/go1.13.4.linux-amd64.tar.gz -O ./go.tar.gz
 tar -C /usr/local -xzf ./go.tar.gz
-go get -u github.com/go-delve/delve/cmd/dlv
+GOPATH=/home/ubuntu/go /usr/local/go/bin/go get -u github.com/go-delve/delve/cmd/dlv
+
+## Add go to the path
+echo "export GOPATH=/home/ubuntu/go" >> /home/ubuntu/.bashrc
+echo "export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin" >> /home/ubuntu/.bashrc
 
 # Fetch Consul
 wget https://releases.hashicorp.com/consul/1.6.1/consul_1.6.1_linux_amd64.zip -O ./consul.zip
@@ -81,4 +85,5 @@ chmod 644 /etc/systemd/system/consul-aws.service
 
 systemctl daemon-reload
 systemctl start consul.service
+
 systemctl start consul-aws.service
