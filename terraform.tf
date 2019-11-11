@@ -1,6 +1,6 @@
 terraform {
   backend "remote" {
-    hostname = "app.terraform.io"
+    hostname     = "app.terraform.io"
     organization = "niccorp"
 
     workspaces {
@@ -10,11 +10,11 @@ terraform {
 }
 
 resource "tls_private_key" "deployer" {
-  algorithm   = "RSA"
-  rsa_bits    = "4096"
+  algorithm = "RSA"
+  rsa_bits  = "4096"
 }
 
 resource "aws_key_pair" "deployer" {
   key_name   = "deployer"
-  public_key = tls_private_key.deployer.public_key_openssh 
+  public_key = tls_private_key.deployer.public_key_openssh
 }

@@ -3,7 +3,7 @@ resource "aws_vpc" "default" {
   cidr_block           = var.vpc_cidr_block
   enable_dns_hostnames = true
 
-  tags   =  {
+  tags = {
     Name = "my-vpc"
   }
 }
@@ -12,7 +12,7 @@ resource "aws_vpc" "default" {
 resource "aws_internet_gateway" "default" {
   vpc_id = aws_vpc.default.id
 
-  tags   = {
+  tags = {
     Name = "my-gateway"
   }
 }
@@ -32,47 +32,47 @@ resource "aws_subnet" "default" {
   cidr_block              = var.private_subnets[count.index]
   map_public_ip_on_launch = true
 
-  tags   = {
+  tags = {
     Name = "my-subnet-${count.index}"
   }
 }
 
 resource "aws_security_group_rule" "allow_consul" {
-  type            = "ingress"
-  from_port       = 8500
-  to_port         = 8500
-  protocol        = "tcp"
-  cidr_blocks     = ["0.0.0.0/0"]
+  type        = "ingress"
+  from_port   = 8500
+  to_port     = 8500
+  protocol    = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
 
   security_group_id = aws_vpc.default.default_security_group_id
 }
 
 resource "aws_security_group_rule" "allow_fake_service" {
-  type            = "ingress"
-  from_port       = 9090
-  to_port         = 9090
-  protocol        = "tcp"
-  cidr_blocks     = ["0.0.0.0/0"]
+  type        = "ingress"
+  from_port   = 9090
+  to_port     = 9090
+  protocol    = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
 
   security_group_id = aws_vpc.default.default_security_group_id
 }
 
 resource "aws_security_group_rule" "allow_envoy" {
-  type            = "ingress"
-  from_port       = 20000
-  to_port         = 20000
-  protocol        = "tcp"
-  cidr_blocks     = ["0.0.0.0/0"]
+  type        = "ingress"
+  from_port   = 20000
+  to_port     = 20000
+  protocol    = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
 
   security_group_id = aws_vpc.default.default_security_group_id
 }
 
 resource "aws_security_group_rule" "allow_ssh" {
-  type            = "ingress"
-  from_port       = 22
-  to_port         = 22
-  protocol        = "tcp"
-  cidr_blocks     = ["0.0.0.0/0"]
+  type        = "ingress"
+  from_port   = 22
+  to_port     = 22
+  protocol    = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
 
   security_group_id = aws_vpc.default.default_security_group_id
 }

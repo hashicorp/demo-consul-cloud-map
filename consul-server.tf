@@ -66,17 +66,17 @@ data "template_file" "consul_server" {
 
   vars = {
     namespace_id = aws_service_discovery_private_dns_namespace.example.id
-    aws_region = "us-east-1"
+    aws_region   = "us-east-1"
   }
 }
 
 resource "aws_instance" "consul_server" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
-  key_name = aws_key_pair.deployer.key_name
+  key_name      = aws_key_pair.deployer.key_name
 
-  vpc_security_group_ids = [aws_vpc.default.default_security_group_id]
-  subnet_id     = aws_subnet.default[0].id
+  vpc_security_group_ids      = [aws_vpc.default.default_security_group_id]
+  subnet_id                   = aws_subnet.default[0].id
   associate_public_ip_address = true
 
   user_data = data.template_file.consul_server.rendered
