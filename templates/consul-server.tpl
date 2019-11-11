@@ -44,6 +44,23 @@ enable_central_service_config = true
 advertise_addr = "$${LOCAL_IPV4}"
 # advertise_addr_wan = ""
 # retry_join_wan = [""]
+
+config_entries {
+  bootstrap = [
+    {
+      kind = "proxy-defaults"
+      name = "global"
+      
+      config {
+        protocol = "http"
+      }
+      
+      mesh_gateway = {
+        mode = "local"
+      }
+    }
+  ]
+}
 EOF
 
 # Setup system D
