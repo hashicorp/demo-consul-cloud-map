@@ -32,6 +32,7 @@ resource "aws_iam_policy" "consul_server" {
             "servicediscovery:RegisterInstance",
             "servicediscovery:DeregisterInstance",
             "servicediscovery:DiscoverInstances",
+            "servicediscovery:CreateService",
             "servicediscovery:Get*",
             "servicediscovery:List*",
             "route53:GetHostedZone",
