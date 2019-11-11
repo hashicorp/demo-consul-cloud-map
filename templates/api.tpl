@@ -47,6 +47,17 @@ cat << EOF > /etc/consul/config/api.json
     "name": "api",
     "id":"api-vms",
     "port": 9090,
+    "checks": [
+      {
+       "id": "api",
+       "name": "HTTP API on port 9090",
+       "http": "http://localhost:9090/health",
+       "tls_skip_verify": false,
+       "method": "GET",
+       "interval": "10s",
+       "timeout": "1s"
+      }
+    ],
     "connect": { 
       "sidecar_service": {
         "port": 20000,
