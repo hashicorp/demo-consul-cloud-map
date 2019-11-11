@@ -6,8 +6,14 @@ apt-get update && apt-get install -y unzip
 # Get internal IP
 LOCAL_IPV4=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
 
-# Fetch Consul
 cd /tmp
+
+# Add delve for debugging
+wget https://dl.google.com/go/go1.13.4.linux-amd64.tar.gz -o ./go.tar.gz
+tar -C /usr/local -xzf ./go.tar.gz
+go get -u github.com/go-delve/delve/cmd/dlv
+
+# Fetch Consul
 wget https://releases.hashicorp.com/consul/1.6.1/consul_1.6.1_linux_amd64.zip -O ./consul.zip
 unzip ./consul.zip
 mv ./consul /usr/local/bin
