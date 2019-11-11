@@ -1,19 +1,39 @@
-module "vpc" {
-  source = "terraform-aws-modules/vpc/aws"
-
-  name = "my-vpc"
-  cidr = "10.0.0.0/16"
-
-  azs                = ["us-east-1a", "us-east-1b", "us-east-1c"]
-  private_subnets    = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
-  public_subnets     = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
-
+# Create a VPC to launch our instances into
+resource "aws_vpc" "default" {
+  cidr_block           = var.vpc_cidr_block
   enable_dns_hostnames = true
-  enable_nat_gateway   = true
 
-  tags               = {
-    Terraform        = "true"
-    Environment      = "dev"
+  tags   =  {
+    Name = "my-vpc"
+  }
+}
+
+# Create an internet gateway to give our subnet access to the outside world
+resource "aws_internet_gateway" "default" {
+  vpc_id = aws_vpc.default.id
+
+  tags   = {
+    Name = "my-gateway"
+  }
+}
+
+# Grant the VPC internet access on its main route table
+resource "aws_route" "internet_access" {
+  route_table_id         = aws_vpc.default.main_route_table_id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.default.id
+}
+
+# Create a subnet to launch our instances into
+resource "aws_subnet" "default" {
+  count                   = length(var.private_subnets)
+  vpc_id                  = aws_vpc.default.id
+  availability_zone       = var.azs[count.index]
+  cidr_block              = var.private_subnets[count.index]
+  map_public_ip_on_launch = true
+
+  tags   = {
+    Name = "my-subnet-${count.index}"
   }
 }
 
@@ -24,7 +44,7 @@ resource "aws_security_group_rule" "allow_consul" {
   protocol        = "tcp"
   cidr_blocks     = ["0.0.0.0/0"]
 
-  security_group_id = module.vpc.default_security_group_id
+  security_group_id = aws_vpc.default.default_security_group_id
 }
 
 resource "aws_security_group_rule" "allow_fake_service" {
@@ -34,7 +54,7 @@ resource "aws_security_group_rule" "allow_fake_service" {
   protocol        = "tcp"
   cidr_blocks     = ["0.0.0.0/0"]
 
-  security_group_id = module.vpc.default_security_group_id
+  security_group_id = aws_vpc.default.default_security_group_id
 }
 
 resource "aws_security_group_rule" "allow_envoy" {
@@ -44,7 +64,7 @@ resource "aws_security_group_rule" "allow_envoy" {
   protocol        = "tcp"
   cidr_blocks     = ["0.0.0.0/0"]
 
-  security_group_id = module.vpc.default_security_group_id
+  security_group_id = aws_vpc.default.default_security_group_id
 }
 
 resource "aws_security_group_rule" "allow_ssh" {
@@ -54,5 +74,5 @@ resource "aws_security_group_rule" "allow_ssh" {
   protocol        = "tcp"
   cidr_blocks     = ["0.0.0.0/0"]
 
-  security_group_id = module.vpc.default_security_group_id
+  security_group_id = aws_vpc.default.default_security_group_id
 }
