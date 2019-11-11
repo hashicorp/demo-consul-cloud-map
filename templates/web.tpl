@@ -19,7 +19,7 @@ After=syslog.target network.target
 [Service]
 Environment="MESSAGE=Web v1"
 Environment=NAME=Web
-Environment=UPSTREAM_URIS=http://api.example.terraform.local
+Environment=UPSTREAM_URIS=http://api.example.terraform.local:9090
 ExecStart=/usr/local/bin/fake-service
 ExecStop=/bin/sleep 5
 Restart=always
