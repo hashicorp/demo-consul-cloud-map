@@ -2,8 +2,8 @@ output "consul_server" {
   value = aws_instance.consul_server.public_ip
 }
 
-output "shared_service" {
-  value = aws_instance.shared_service.public_ip
+output "shared_services" {
+  value = aws_instance.shared_services.public_ip
 }
 
 output "web" {
