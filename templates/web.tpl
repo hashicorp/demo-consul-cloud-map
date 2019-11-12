@@ -18,7 +18,7 @@ Description=Web
 After=syslog.target network.target
 [Service]
 Environment="MESSAGE=Web v1"
-Environment=NAME=Web
+Environment=NAME=Web-AWS
 Environment=UPSTREAM_URIS=http://api.example.terraform:9090
 Environment=TRACING_ZIPKIN=http://${shared_services_private_ip}:9411
 ExecStart=/usr/local/bin/fake-service

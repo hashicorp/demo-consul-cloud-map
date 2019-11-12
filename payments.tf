@@ -10,6 +10,8 @@ resource "aws_instance" "payments" {
   user_data = templatefile("${path.module}/templates/payments.tpl", { consul_cluster_addr = aws_instance.consul_server.private_ip, shared_services_private_ip = aws_instance.shared_services.private_ip })
 
   tags = {
-    Name = "Payments"
+    Name = "Payment Database"
+    Version = "v1"
+    Location = "On-Premises"
   }
 }

@@ -27,5 +27,7 @@ resource "aws_instance" "web" {
 
   tags = {
     Name = "Web"
+    Version = "v1"
+    Location = "AWS"
   }
 }

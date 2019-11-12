@@ -11,5 +11,7 @@ resource "aws_instance" "api" {
 
   tags = {
     Name = "API"
+    Version = "v1"
+    Location = "OnPremises"
   }
 }
