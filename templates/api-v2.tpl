@@ -45,15 +45,15 @@ cat << EOF > /etc/consul/config/api.json
 {
   "service": {
     "name": "api",
-    "id":"api-vms",
+    "id":"api-v2",
     "port": 9090,
-    "tags": ["v1"],
+    "tags": ["v2"],
     "meta": {
-      "version": "1"
+      "version": "2"
     },
     "checks": [
       {
-       "id": "api",
+       "id": "api-v2",
        "name": "HTTP API on port 9090",
        "http": "http://localhost:9090/health",
        "tls_skip_verify": false,
@@ -101,7 +101,7 @@ cat << EOF > /etc/systemd/system/consul-envoy.service
 Description=Consul Envoy
 After=syslog.target network.target
 [Service]
-ExecStart=/usr/local/bin/consul connect envoy -sidecar-for api-vms
+ExecStart=/usr/local/bin/consul connect envoy -sidecar-for api-v2
 ExecStop=/bin/sleep 5
 Restart=always
 [Install]
@@ -116,8 +116,8 @@ cat << EOF > /etc/systemd/system/api.service
 Description=API
 After=syslog.target network.target
 [Service]
-Environment="MESSAGE=API v1"
-Environment=NAME=API-v1-OnPrem
+Environment="MESSAGE=API v2"
+Environment=NAME=API-v2-AWS
 Environment=UPSTREAM_URIS=http://localhost:9091
 Environment=TRACING_ZIPKIN=http://${shared_services_private_ip}:9411
 ExecStart=/usr/local/bin/fake-service
