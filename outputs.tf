@@ -22,3 +22,7 @@ output "private_key" {
   sensitive = true
   value     = tls_private_key.deployer.private_key_pem
 }
+
+output "namespace_id" {
+  value     = aws_service_discovery_private_dns_namespace.example.id
+}
