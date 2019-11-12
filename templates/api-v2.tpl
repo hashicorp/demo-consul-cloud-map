@@ -26,7 +26,7 @@ mkdir -p /etc/consul/config
 cat << EOF > /etc/consul/config.hcl
 data_dir = "/tmp/"
 log_level = "DEBUG"
-datacenter = "cloud"
+datacenter = "onprem"
 bind_addr = "0.0.0.0"
 client_addr = "0.0.0.0"
 ports {

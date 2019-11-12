@@ -26,8 +26,8 @@ mkdir -p /etc/consul
 cat << EOF > /etc/consul/config.hcl
 data_dir = "/tmp/"
 log_level = "DEBUG"
-datacenter = "cloud"
-primary_datacenter = "cloud"
+datacenter = "onprem"
+primary_datacenter = "onprem"
 server = true
 bootstrap_expect = 1
 ui = true
