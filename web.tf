@@ -14,10 +14,6 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
-data "template_file" "web" {
-  template = file("${path.module}/templates/web.tpl")
-}
-
 resource "aws_instance" "web" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
@@ -27,7 +23,7 @@ resource "aws_instance" "web" {
   subnet_id                   = aws_subnet.default[0].id
   associate_public_ip_address = true
 
-  user_data = data.template_file.web.rendered
+  user_data = templatefile("${path.module}/templates/web.tpl", { shared_services_private_ip = aws_instance.shared_services.private_ip })
 
   tags = {
     Name = "Web"

@@ -24,5 +24,5 @@ output "private_key" {
 }
 
 output "namespace_id" {
-  value     = aws_service_discovery_private_dns_namespace.example.id
+  value = aws_service_discovery_private_dns_namespace.example.id
 }

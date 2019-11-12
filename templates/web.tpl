@@ -20,6 +20,7 @@ After=syslog.target network.target
 Environment="MESSAGE=Web v1"
 Environment=NAME=Web
 Environment=UPSTREAM_URIS=http://api.example.terraform:9090
+Environment=TRACING_ZIPKIN=http://${shared_services_private_ip}:9411
 ExecStart=/usr/local/bin/fake-service
 ExecStop=/bin/sleep 5
 Restart=always

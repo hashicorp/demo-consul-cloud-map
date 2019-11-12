@@ -17,11 +17,3 @@ resource "aws_instance" "shared_services" {
     Name = "Shared_Services"
   }
 }
-
-resource "aws_route53_record" "shared_services" {
-  zone_id = aws_service_discovery_private_dns_namespace.example.hosted_zone
-  name    = "shared.${aws_service_discovery_private_dns_namespace.example.name}"
-  type    = "A"
-  ttl     = "300"
-  records = [aws_instance.shared_services.private_ip]
-}
