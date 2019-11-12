@@ -115,6 +115,7 @@ After=syslog.target network.target
 Environment="MESSAGE=API v1"
 Environment=NAME=API
 Environment=UPSTREAM_URIS=http://localhost:9091
+Environment=TRACING_ZIPKIN=http://${shared_services_private_ip}:9411
 ExecStart=/usr/local/bin/fake-service
 ExecStop=/bin/sleep 5
 Restart=always
