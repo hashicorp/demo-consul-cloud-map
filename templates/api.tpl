@@ -45,7 +45,7 @@ cat << EOF > /etc/consul/config/api.json
 {
   "service": {
     "name": "api",
-    "id":"api-vms",
+    "id":"api-v1",
     "port": 9090,
     "tags": ["v1"],
     "meta": {
@@ -101,7 +101,7 @@ cat << EOF > /etc/systemd/system/consul-envoy.service
 Description=Consul Envoy
 After=syslog.target network.target
 [Service]
-ExecStart=/usr/local/bin/consul connect envoy -sidecar-for api-vms
+ExecStart=/usr/local/bin/consul connect envoy -sidecar-for api-v1
 ExecStop=/bin/sleep 5
 Restart=always
 [Install]
