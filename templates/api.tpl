@@ -49,7 +49,7 @@ cat << EOF > /etc/consul/config/api.json
     "port": 9090,
     "tags": ["v1"],
     "meta": {
-      "version": 1
+      "version": "1"
     },
     "checks": [
       {
