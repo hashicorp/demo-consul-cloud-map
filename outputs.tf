@@ -14,8 +14,8 @@ output "api" {
   value = aws_instance.api.public_ip
 }
 
-output "payments" {
-  value = aws_instance.payments.public_ip
+output "database" {
+  value = aws_instance.database.public_ip
 }
 
 output "private_key" {

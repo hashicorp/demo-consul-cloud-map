@@ -68,7 +68,7 @@ cat << EOF > /etc/consul/config/api.json
         "proxy": {
           "upstreams": [
             {
-              "destination_name": "payments",
+              "destination_name": "database",
               "local_bind_address": "127.0.0.1",
               "local_bind_port": 9091
             }

@@ -41,15 +41,19 @@ retry_join = ["${consul_cluster_addr}"]
 EOF
 
 # Create config and register service
-cat << EOF > /etc/consul/config/payments.json
+cat << EOF > /etc/consul/config/database.json
 {
   "service": {
-    "name": "payments",
-    "id":"payments-vms",
+    "name": "database",
+    "id":"database-v1",
     "port": 9090,
+    "tags": ["v1"],
+    "meta": {
+      "version": "1"
+    },
     "checks": [
       {
-       "id": "payments",
+       "id": "database",
        "name": "HTTP API on port 9090",
        "http": "http://localhost:9090/health",
        "tls_skip_verify": false,
@@ -90,7 +94,7 @@ cat << EOF > /etc/systemd/system/consul-envoy.service
 Description=Consul Envoy
 After=syslog.target network.target
 [Service]
-ExecStart=/usr/local/bin/consul connect envoy -sidecar-for payments-vms
+ExecStart=/usr/local/bin/consul connect envoy -sidecar-for database-v1
 ExecStop=/bin/sleep 5
 Restart=always
 [Install]
@@ -100,13 +104,13 @@ EOF
 chmod 644 /etc/systemd/system/consul-envoy.service
 
 # Setup systemd Payment service
-cat << EOF > /etc/systemd/system/payments.service
+cat << EOF > /etc/systemd/system/database.service
 [Unit]
 Description=Payment
 After=syslog.target network.target
 [Service]
-Environment="MESSAGE=payment successful"
-Environment=NAME=Payment-Database-OnPrem
+Environment="MESSAGE=record written"
+Environment=NAME=Database-v1-OnPrem
 Environment=TRACING_ZIPKIN=http://${shared_services_private_ip}:9411
 ExecStart=/usr/local/bin/fake-service
 ExecStop=/bin/sleep 5
@@ -115,9 +119,9 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 
-chmod 644 /etc/systemd/system/payments.service
+chmod 644 /etc/systemd/system/database.service
 
 systemctl daemon-reload
 systemctl start consul.service
 systemctl start consul-envoy.service
-systemctl start payments.service
+systemctl start database.service
