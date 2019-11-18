@@ -13,7 +13,7 @@ split:
 
 open:
 	open http://$(shell terraform output shared_services):16686
-	open http://$(shell terraform output web):9090/ui
+	open http://$(shell terraform output web_onprem):9090/ui
 	open http://$(shell terraform output consul_server_onprem):8500
 	open http://$(shell terraform output consul_server_aws):8500
 

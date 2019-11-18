@@ -14,19 +14,19 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
-resource "aws_instance" "web" {
+resource "aws_instance" "web_onprem" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
   key_name      = aws_key_pair.deployer.key_name
 
   vpc_security_group_ids      = [aws_vpc.default.default_security_group_id]
-  subnet_id                   = aws_subnet.default[1].id
+  subnet_id                   = aws_subnet.default[0].id
   associate_public_ip_address = true
 
-  user_data = templatefile("${path.module}/templates/web.tpl", { shared_services_private_ip = aws_instance.shared_services.private_ip })
+  user_data = templatefile("${path.module}/templates/web.tpl", { dc = "onprem", shared_services_private_ip = aws_instance.shared_services.private_ip })
 
   tags = {
     Name     = "Web"
-    Location = "AWS"
+    Location = "OnPrem"
   }
 }

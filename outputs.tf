@@ -10,8 +10,8 @@ output "shared_services" {
   value = aws_instance.shared_services.public_ip
 }
 
-output "web" {
-  value = aws_instance.web.public_ip
+output "web_onprem" {
+  value = aws_instance.web_onprem.public_ip
 }
 
 output "api_onprem" {
