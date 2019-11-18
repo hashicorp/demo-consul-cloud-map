@@ -67,6 +67,16 @@ resource "aws_security_group_rule" "allow_jaeger" {
   security_group_id = aws_vpc.default.default_security_group_id
 }
 
+resource "aws_security_group_rule" "allow_jaeger_spans" {
+  type        = "ingress"
+  from_port   = 9411
+  to_port     = 9411
+  protocol    = "tcp"
+  cidr_blocks = [var.vpc_cidr_block]
+
+  security_group_id = aws_vpc.default.default_security_group_id
+}
+
 resource "aws_security_group_rule" "allow_envoy" {
   type        = "ingress"
   from_port   = 20000
