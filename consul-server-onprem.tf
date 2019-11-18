@@ -61,15 +61,6 @@ resource "aws_iam_instance_profile" "consul_server" {
   role = aws_iam_role.consul_server.name
 }
 
-data "template_file" "consul_server" {
-  template = file("${path.module}/templates/consul-server.tpl")
-
-  vars = {
-    namespace_id = aws_service_discovery_private_dns_namespace.example.id
-    aws_region   = "us-east-1"
-  }
-}
-
 resource "aws_instance" "consul_server" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
@@ -79,11 +70,12 @@ resource "aws_instance" "consul_server" {
   subnet_id                   = aws_subnet.default[0].id
   associate_public_ip_address = true
 
-  user_data = data.template_file.consul_server.rendered
+  user_data = templatefile("${path.module}/templates/consul-server.tpl", { namespace_id = aws_service_discovery_private_dns_namespace.example.id, aws_region = data.aws_region.current.name, dc = "onprem" })
 
   iam_instance_profile = aws_iam_instance_profile.consul_server.name
 
   tags = {
-    Name = "Consul_Server"
+    Name       = "Consul"
+    Datacenter = "OnPrem"
   }
 }

@@ -28,7 +28,7 @@ resource "aws_route" "internet_access" {
 resource "aws_subnet" "default" {
   count                   = length(var.private_subnets)
   vpc_id                  = aws_vpc.default.id
-  availability_zone       = var.azs[count.index]
+  availability_zone       = data.aws_availability_zones.available.names[count.index]
   cidr_block              = var.private_subnets[count.index]
   map_public_ip_on_launch = true
 
