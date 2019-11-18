@@ -61,7 +61,7 @@ resource "aws_iam_instance_profile" "consul_server" {
   role = aws_iam_role.consul_server.name
 }
 
-resource "aws_instance" "consul_server" {
+resource "aws_instance" "consul_server_onprem" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
   key_name      = aws_key_pair.deployer.key_name
