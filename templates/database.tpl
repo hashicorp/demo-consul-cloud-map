@@ -90,7 +90,7 @@ cat << EOF > /etc/systemd/system/consul-envoy.service
 Description=Consul Envoy
 After=syslog.target network.target
 [Service]
-ExecStart=/usr/local/bin/consul connect envoy -sidecar-for database-v1
+ExecStart=/usr/local/bin/consul connect envoy -sidecar-for database
 ExecStop=/bin/sleep 5
 Restart=always
 [Install]
