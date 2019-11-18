@@ -26,7 +26,7 @@ mkdir -p /etc/consul/config
 cat << EOF > /etc/consul/config.hcl
 data_dir = "/tmp/"
 log_level = "DEBUG"
-datacenter = "onprem"
+datacenter = "${dc}"
 bind_addr = "0.0.0.0"
 client_addr = "0.0.0.0"
 ports {
@@ -45,12 +45,8 @@ cat << EOF > /etc/consul/config/api.json
 {
   "service": {
     "name": "api",
-    "id":"api-v1",
+    "id":"api",
     "port": 9090,
-    "tags": ["v1"],
-    "meta": {
-      "version": "1"
-    },
     "checks": [
       {
        "id": "api",
@@ -101,7 +97,7 @@ cat << EOF > /etc/systemd/system/consul-envoy.service
 Description=Consul Envoy
 After=syslog.target network.target
 [Service]
-ExecStart=/usr/local/bin/consul connect envoy -sidecar-for api-v1
+ExecStart=/usr/local/bin/consul connect envoy -sidecar-for api
 ExecStop=/bin/sleep 5
 Restart=always
 [Install]
@@ -116,8 +112,8 @@ cat << EOF > /etc/systemd/system/api.service
 Description=API
 After=syslog.target network.target
 [Service]
-Environment="MESSAGE=API v1"
-Environment=NAME=API-OnPrem
+Environment="MESSAGE=API ${dc}"
+Environment=NAME=API-${dc}
 Environment=UPSTREAM_URIS=http://localhost:9091
 Environment=TRACING_ZIPKIN=http://${shared_services_private_ip}:9411
 ExecStart=/usr/local/bin/fake-service

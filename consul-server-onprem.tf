@@ -75,7 +75,7 @@ resource "aws_instance" "consul_server_onprem" {
   iam_instance_profile = aws_iam_instance_profile.consul_server.name
 
   tags = {
-    Name       = "Consul"
-    Datacenter = "OnPrem"
+    Name     = "Consul"
+    Location = "OnPrem"
   }
 }

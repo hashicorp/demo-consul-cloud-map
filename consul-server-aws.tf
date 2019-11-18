@@ -12,7 +12,7 @@ resource "aws_instance" "consul_server_aws" {
   iam_instance_profile = aws_iam_instance_profile.consul_server.name
 
   tags = {
-    Name       = "Consul"
-    Datacenter = "AWS"
+    Name     = "Consul"
+    Location = "AWS"
   }
 }

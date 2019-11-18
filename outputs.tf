@@ -14,8 +14,8 @@ output "web" {
   value = aws_instance.web.public_ip
 }
 
-output "api" {
-  value = aws_instance.api.public_ip
+output "api_onprem" {
+  value = aws_instance.api_onprem.public_ip
 }
 
 output "database" {

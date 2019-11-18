@@ -10,8 +10,7 @@ resource "aws_instance" "database" {
   user_data = templatefile("${path.module}/templates/database.tpl", { consul_cluster_addr = aws_instance.consul_server_onprem.private_ip, shared_services_private_ip = aws_instance.shared_services.private_ip })
 
   tags = {
-    Name     = "Database OnPrem"
-    Version  = "v1"
+    Name     = "Database"
     Location = "OnPrem"
   }
 }
