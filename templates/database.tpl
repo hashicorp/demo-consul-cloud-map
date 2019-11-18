@@ -45,12 +45,8 @@ cat << EOF > /etc/consul/config/database.json
 {
   "service": {
     "name": "database",
-    "id":"database-v1",
+    "id":"database",
     "port": 9090,
-    "tags": ["v1"],
-    "meta": {
-      "version": "1"
-    },
     "checks": [
       {
        "id": "database",
@@ -110,7 +106,7 @@ Description=Payment
 After=syslog.target network.target
 [Service]
 Environment="MESSAGE=record written"
-Environment=NAME=Database-OnPrem
+Environment=NAME=Database-onprem
 Environment=TRACING_ZIPKIN=http://${shared_services_private_ip}:9411
 ExecStart=/usr/local/bin/fake-service
 ExecStop=/bin/sleep 5
