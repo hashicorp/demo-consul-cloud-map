@@ -14,6 +14,10 @@ output "web_onprem" {
   value = aws_instance.web_onprem.public_ip
 }
 
+output "web_aws" {
+  value = aws_instance.web_aws.public_ip
+}
+
 output "api_onprem" {
   value = aws_instance.api_onprem.public_ip
 }
