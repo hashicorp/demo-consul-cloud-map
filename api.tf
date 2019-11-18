@@ -10,8 +10,8 @@ resource "aws_instance" "api" {
   user_data = templatefile("${path.module}/templates/api.tpl", { consul_cluster_addr = aws_instance.consul_server_onprem.private_ip, shared_services_private_ip = aws_instance.shared_services.private_ip })
 
   tags = {
-    Name     = "API"
+    Name     = "API OnPrem"
     Version  = "v1"
-    Location = "On-Premises"
+    Location = "OnPrem"
   }
 }

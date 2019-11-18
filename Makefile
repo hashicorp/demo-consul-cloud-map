@@ -1,3 +1,7 @@
+unit:
+	terraform fmt
+	terraform validate
+
 key:
 	@echo "$(shell terraform output private_key)" > key.pem && chmod 0600 key.pem
 

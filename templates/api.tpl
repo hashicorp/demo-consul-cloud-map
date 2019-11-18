@@ -117,7 +117,7 @@ Description=API
 After=syslog.target network.target
 [Service]
 Environment="MESSAGE=API v1"
-Environment=NAME=API-v1-OnPrem
+Environment=NAME=API-OnPrem
 Environment=UPSTREAM_URIS=http://localhost:9091
 Environment=TRACING_ZIPKIN=http://${shared_services_private_ip}:9411
 ExecStart=/usr/local/bin/fake-service

@@ -26,8 +26,8 @@ resource "aws_instance" "web" {
   user_data = templatefile("${path.module}/templates/web.tpl", { shared_services_private_ip = aws_instance.shared_services.private_ip })
 
   tags = {
-    Name     = "Web"
+    Name     = "Web OnPrem"
     Version  = "v1"
-    Location = "AWS"
+    Location = "OnPrem"
   }
 }
