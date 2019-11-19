@@ -114,7 +114,7 @@ After=syslog.target network.target
 [Service]
 Environment="MESSAGE=API ${dc}"
 Environment=NAME=API-${dc}
-Environment=UPSTREAM_URIS=http://localhost:9091
+Environment=UPSTREAM_URIS=%{ if dc != "aws" }http://localhost:9091%{ else }http://database.example.terraform:9090%{ endif }
 Environment=TRACING_ZIPKIN=http://${shared_services_private_ip}:9411
 ExecStart=/usr/local/bin/fake-service
 ExecStop=/bin/sleep 5
