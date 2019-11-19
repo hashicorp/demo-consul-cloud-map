@@ -9,7 +9,7 @@ nav_order: 2
 We have an 3-tier service with web, application, and database tiers. To make it easier to control the services,
 we've added Consul service mesh within the datacenter.
 
-![A corporate datacenter featuring web, api, and database servers with Consul and Jaeger.](images/stage1/architecture.png)
+![Corporate datacenter featuring web, api, and database servers with Consul server](images/stage1/architecture.png)
 
 When we access the Web UI at `open http://$(terraform output web_onprem):9090/ui`, we will see the web UI
 connecting to the API on `http://localhost:9092` and the database at `http://localhost:9091`.

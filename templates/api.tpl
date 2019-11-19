@@ -41,6 +41,41 @@ retry_join = ["${consul_cluster_addr}"]
 EOF
 
 # Create config and register service
+# cat << EOF > /etc/consul/config/api.json
+# {
+#   "service": {
+#     "name": "api",
+#     "id":"api",
+#     "port": 9090,
+#     "checks": [
+#       {
+#        "id": "api",
+#        "name": "HTTP API on port 9090",
+#        "http": "http://localhost:9090/health",
+#        "tls_skip_verify": false,
+#        "method": "GET",
+#        "interval": "10s",
+#        "timeout": "1s"
+#       }
+#     ],
+#     "connect": { 
+#       "sidecar_service": {
+#         "port": 20000,
+#         "proxy": {
+#           "upstreams": [
+#             {
+#               "destination_name": "database",
+#               "local_bind_address": "127.0.0.1",
+#               "local_bind_port": 9091
+#             }
+#           ]
+#         }
+#       }
+#     }  
+#   }
+# }
+# EOF
+
 cat << EOF > /etc/consul/config/api.json
 {
   "service": {
@@ -62,13 +97,7 @@ cat << EOF > /etc/consul/config/api.json
       "sidecar_service": {
         "port": 20000,
         "proxy": {
-          "upstreams": [
-            {
-              "destination_name": "database",
-              "local_bind_address": "127.0.0.1",
-              "local_bind_port": 9091
-            }
-          ]
+          "upstreams": []
         }
       }
     }  
