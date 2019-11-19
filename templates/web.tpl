@@ -121,7 +121,7 @@ After=syslog.target network.target
 [Service]
 Environment="MESSAGE=Web ${dc}"
 Environment=NAME=Web-${dc}
-Environment=UPSTREAM_URIS=%{ if consul_cluster_addr != "" }http://localhost:9092%{ else }http://api.example.terraform:9090%{ endif }
+Environment=UPSTREAM_URIS=%{ if use_proxy }http://localhost:9092%{ else }http://api.example.terraform:9090%{ endif }
 Environment=TRACING_ZIPKIN=http://${shared_services_private_ip}:9411
 ExecStart=/usr/local/bin/fake-service
 ExecStop=/bin/sleep 5

@@ -99,3 +99,7 @@ onprem tracing to Jaeger to visualize the requests from the application.
 Note that the `call_upstream` metadata shows the `api.example.terraform` endpoint.
 
 ![Jaeger interface with request traces showing api.example.terraform for API calls and localhost:9091 for database calls](images/stage2/tracing.png)
+
+We confirm that our functionality still works in this canary test.
+Let's add a Consul sidecar to the Web UI on AWS EC2 so we can better manage
+the migration from hybrid to AWS.
