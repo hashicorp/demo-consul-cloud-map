@@ -61,17 +61,15 @@ cat << EOF > /etc/consul/config/api.json
     "connect": { 
       "sidecar_service": {
         "port": 20000,
-        "proxy": {
+        "proxy": {%{ if use_proxy }
           "upstreams": [
-            %{ if use_proxy }
             {
               "destination_name": "database",
               "local_bind_address": "127.0.0.1",
               "local_bind_port": 9091
             }
-            %{ endif }
           ]
-        }
+        %{ endif }}
       }
     }  
   }
