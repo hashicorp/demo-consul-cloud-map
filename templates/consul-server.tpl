@@ -27,7 +27,7 @@ cat << EOF > /etc/consul/config.hcl
 data_dir = "/tmp/"
 log_level = "DEBUG"
 datacenter = "${dc}"
-primary_datacenter = "onprem"
+primary_datacenter = "${dc}"
 server = true
 bootstrap_expect = 1
 ui = true
@@ -106,3 +106,6 @@ systemctl daemon-reload
 systemctl start consul-aws.service
 
 %{ endif }
+
+systemctl daemon-reload
+systemctl start consul.service
