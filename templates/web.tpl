@@ -64,11 +64,13 @@ cat << EOF > /etc/consul/config/web.json
         "port": 20000,
         "proxy": {
           "upstreams": [
+            %{ if use_proxy }
             {
               "destination_name": "api",
               "local_bind_address": "127.0.0.1",
               "local_bind_port": 9092
             }
+            %{ endif }
           ]
         }
       }

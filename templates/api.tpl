@@ -40,42 +40,7 @@ advertise_addr = "$${LOCAL_IPV4}"
 retry_join = ["${consul_cluster_addr}"]
 EOF
 
-# Create config and register service
-# cat << EOF > /etc/consul/config/api.json
-# {
-#   "service": {
-#     "name": "api",
-#     "id":"api",
-#     "port": 9090,
-#     "checks": [
-#       {
-#        "id": "api",
-#        "name": "HTTP API on port 9090",
-#        "http": "http://localhost:9090/health",
-#        "tls_skip_verify": false,
-#        "method": "GET",
-#        "interval": "10s",
-#        "timeout": "1s"
-#       }
-#     ],
-#     "connect": { 
-#       "sidecar_service": {
-#         "port": 20000,
-#         "proxy": {
-#           "upstreams": [
-#             {
-#               "destination_name": "database",
-#               "local_bind_address": "127.0.0.1",
-#               "local_bind_port": 9091
-#             }
-#           ]
-#         }
-#       }
-#     }  
-#   }
-# }
-# EOF
-
+Create config and register service
 cat << EOF > /etc/consul/config/api.json
 {
   "service": {
@@ -97,7 +62,15 @@ cat << EOF > /etc/consul/config/api.json
       "sidecar_service": {
         "port": 20000,
         "proxy": {
-          "upstreams": []
+          "upstreams": [
+            %{ if use_proxy }
+            {
+              "destination_name": "database",
+              "local_bind_address": "127.0.0.1",
+              "local_bind_port": 9091
+            }
+            %{ endif }
+          ]
         }
       }
     }  
@@ -143,7 +116,7 @@ After=syslog.target network.target
 [Service]
 Environment="MESSAGE=API ${dc}"
 Environment=NAME=API-${dc}
-Environment=UPSTREAM_URIS=%{ if dc != "aws" }http://localhost:9091%{ else }http://database.example.terraform:9090%{ endif }
+Environment=UPSTREAM_URIS=%{ if use_proxy }http://localhost:9091%{ else }http://database.example.terraform:9090%{ endif }
 Environment=TRACING_ZIPKIN=http://${shared_services_private_ip}:9411
 ExecStart=/usr/local/bin/fake-service
 ExecStop=/bin/sleep 5
