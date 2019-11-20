@@ -1,9 +1,9 @@
 output "consul_server_onprem" {
-  value = aws_instance.consul_server_onprem.public_ip
+  value = aws_eip.consul_server_onprem.public_ip
 }
 
 output "consul_server_aws" {
-  value = aws_instance.consul_server_aws.public_ip
+  value = aws_eip.consul_server_aws.public_ip
 }
 
 output "shared_services" {

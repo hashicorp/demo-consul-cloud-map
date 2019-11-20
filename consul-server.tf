@@ -76,8 +76,8 @@ resource "aws_instance" "consul_server_onprem" {
   instance_type = "t2.micro"
   key_name      = aws_key_pair.deployer.key_name
 
-  vpc_security_group_ids      = [aws_vpc.default.default_security_group_id]
-  subnet_id                   = aws_subnet.default[0].id
+  vpc_security_group_ids = [aws_vpc.default.default_security_group_id]
+  subnet_id              = aws_subnet.default[0].id
 
   user_data = templatefile("${path.module}/templates/consul-server.tpl", {
     dc_public_ip       = aws_eip.consul_server_onprem.public_ip,
@@ -110,8 +110,8 @@ resource "aws_instance" "consul_server_aws" {
   instance_type = "t2.micro"
   key_name      = aws_key_pair.deployer.key_name
 
-  vpc_security_group_ids      = [aws_vpc.default.default_security_group_id]
-  subnet_id                   = aws_subnet.default[1].id
+  vpc_security_group_ids = [aws_vpc.default.default_security_group_id]
+  subnet_id              = aws_subnet.default[1].id
 
   user_data = templatefile("${path.module}/templates/consul-server.tpl", {
     dc_public_ip       = aws_eip.consul_server_aws.public_ip,

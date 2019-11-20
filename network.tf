@@ -47,6 +47,16 @@ resource "aws_security_group_rule" "allow_consul" {
   security_group_id = aws_vpc.default.default_security_group_id
 }
 
+resource "aws_security_group_rule" "allow_consul_wan" {
+  type        = "ingress"
+  from_port   = 8302
+  to_port     = 8302
+  protocol    = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+
+  security_group_id = aws_vpc.default.default_security_group_id
+}
+
 resource "aws_security_group_rule" "allow_fake_service" {
   type        = "ingress"
   from_port   = 9090
