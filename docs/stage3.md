@@ -54,3 +54,64 @@ We update the environment variable for our database URI to use `database.example
 ```shell
 UPSTREAM_URIS=http://database.example.terraform:9090
 ```
+
+## Direct Web on AWS to API on AWS
+
+We need to reconfigure the web tier to use Consul proxy and direct to API on AWS.
+
+```json
+{
+  "service": {
+    "name": "web",
+    "id":"web",
+    "port": 9090,
+    "checks": [
+      {
+       "id": "web",
+       "name": "Web on port 9090",
+       "http": "http://localhost:9090/health",
+       "tls_skip_verify": false,
+       "method": "GET",
+       "interval": "10s",
+       "timeout": "1s"
+      }
+    ],
+    "connect": { 
+      "sidecar_service": {
+        "port": 20000,
+        "proxy": {
+          "upstreams": [
+            {
+              "destination_name": "api",
+              "local_bind_address": "127.0.0.1",
+              "local_bind_port": 9092
+            }
+          ]
+      }
+    }  
+  }
+}
+```
+
+The API URI it needs to use would be to the proxy.
+
+```shell
+UPSTREAM_URIS=http://localhost:9092
+```
+
+In Consul, we see that Web on AWS and API on AWS and their sidecars have registered.
+
+![Consul interface with web, api, and their sidecar checks green](images/stage3/consul.png)
+
+## Check that API on AWS Works
+
+As a result, our Web UI shows that we are connecting to the API on AWS via Consul proxy
+and our onprem database at `database.example.terraform`, registered with AWS Cloud Map.
+
+![The Web UI shows a connection to API on localhost:9092 and database on database.example.terraform.](images/stage3/webui.png)
+
+When we examing the traces, we can see that our spans reflect the different datacenters we are sending the requests through!
+
+![Jaeger interface showing one trace going through Web and API on AWS versus previously Web on AWS](images/stage3/tracing.png)
+
+Next, how do we gradually cut over to the API on AWS?

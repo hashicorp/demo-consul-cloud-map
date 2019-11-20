@@ -27,7 +27,6 @@ cat << EOF > /etc/consul/config.hcl
 data_dir = "/tmp/"
 log_level = "DEBUG"
 datacenter = "${dc}"
-primary_datacenter = "${dc}"
 server = true
 bootstrap_expect = 1
 ui = true
@@ -42,8 +41,12 @@ connect {
 }
 enable_central_service_config = true
 advertise_addr = "$${LOCAL_IPV4}"
-# advertise_addr_wan = ""
-# retry_join_wan = [""]
+
+%{ if dc_public_ip != "" }
+primary_datacenter = "onprem"
+advertise_addr_wan = "${dc_public_ip}"
+retry_join_wan = ["${other_dc_public_ip}"]
+%{ endif }
 
 config_entries {
   bootstrap = [

@@ -61,6 +61,16 @@ resource "aws_iam_instance_profile" "consul_server" {
   role = aws_iam_role.consul_server.name
 }
 
+resource "aws_eip" "consul_server_onprem" {
+  vpc        = true
+  depends_on = [aws_internet_gateway.default]
+}
+
+resource "aws_eip_association" "consul_server_onprem" {
+  instance_id   = "${aws_instance.consul_server_onprem.id}"
+  allocation_id = "${aws_eip.consul_server_onprem.id}"
+}
+
 resource "aws_instance" "consul_server_onprem" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
@@ -70,7 +80,13 @@ resource "aws_instance" "consul_server_onprem" {
   subnet_id                   = aws_subnet.default[0].id
   associate_public_ip_address = true
 
-  user_data = templatefile("${path.module}/templates/consul-server.tpl", { namespace_id = aws_service_discovery_private_dns_namespace.example.id, aws_region = data.aws_region.current.name, dc = "onprem" })
+  user_data = templatefile("${path.module}/templates/consul-server.tpl", {
+    dc_public_ip       = aws_eip.consul_server_onprem.public_ip,
+    other_dc_public_ip = aws_eip.consul_server_aws.public_ip,
+    namespace_id       = aws_service_discovery_private_dns_namespace.example.id,
+    aws_region         = data.aws_region.current.name,
+    dc                 = "onprem"
+  })
 
   iam_instance_profile = aws_iam_instance_profile.consul_server.name
 
@@ -78,6 +94,16 @@ resource "aws_instance" "consul_server_onprem" {
     Name     = "Consul"
     Location = "OnPrem"
   }
+}
+
+resource "aws_eip" "consul_server_aws" {
+  vpc        = true
+  depends_on = [aws_internet_gateway.default]
+}
+
+resource "aws_eip_association" "consul_server_aws" {
+  instance_id   = "${aws_instance.consul_server_aws.id}"
+  allocation_id = "${aws_eip.consul_server_aws.id}"
 }
 
 resource "aws_instance" "consul_server_aws" {
@@ -89,7 +115,13 @@ resource "aws_instance" "consul_server_aws" {
   subnet_id                   = aws_subnet.default[1].id
   associate_public_ip_address = true
 
-  user_data = templatefile("${path.module}/templates/consul-server.tpl", { namespace_id = "", aws_region = data.aws_region.current.name, dc = "aws" })
+  user_data = templatefile("${path.module}/templates/consul-server.tpl", {
+    dc_public_ip       = aws_eip.consul_server_aws.public_ip,
+    other_dc_public_ip = aws_eip.consul_server_onprem.public_ip,
+    namespace_id       = "",
+    aws_region         = data.aws_region.current.name,
+    dc                 = "aws"
+  })
 
   iam_instance_profile = aws_iam_instance_profile.consul_server.name
 
