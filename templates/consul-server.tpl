@@ -21,6 +21,10 @@ wget https://releases.hashicorp.com/consul/1.6.1/consul_1.6.1_linux_amd64.zip -O
 unzip ./consul.zip
 mv ./consul /usr/local/bin
 
+# Fetch Envoy
+wget https://github.com/nicholasjackson/cloud-pong/releases/download/v0.3.0/envoy -O /usr/local/bin/envoy
+chmod +x /usr/local/bin/envoy
+
 # Create the consul config
 mkdir -p /etc/consul
 cat << EOF > /etc/consul/config.hcl
@@ -98,9 +102,9 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 
-chmod 644 /etc/systemd/system/consul.service
+chmod 644 /etc/systemd/system/consul-gateway.service
 
-systemctl start consul.service
+systemctl start consul-gateway.service
 
 %{ if namespace_id != "" }
 # Add Consul AWS 
