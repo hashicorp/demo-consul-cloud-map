@@ -67,8 +67,8 @@ resource "aws_eip" "consul_server_onprem" {
 }
 
 resource "aws_eip_association" "consul_server_onprem" {
-  instance_id   = "${aws_instance.consul_server_onprem.id}"
-  allocation_id = "${aws_eip.consul_server_onprem.id}"
+  instance_id   = aws_instance.consul_server_onprem.id
+  allocation_id = aws_eip.consul_server_onprem.id
 }
 
 resource "aws_instance" "consul_server_onprem" {
@@ -78,7 +78,6 @@ resource "aws_instance" "consul_server_onprem" {
 
   vpc_security_group_ids      = [aws_vpc.default.default_security_group_id]
   subnet_id                   = aws_subnet.default[0].id
-  associate_public_ip_address = true
 
   user_data = templatefile("${path.module}/templates/consul-server.tpl", {
     dc_public_ip       = aws_eip.consul_server_onprem.public_ip,
@@ -102,8 +101,8 @@ resource "aws_eip" "consul_server_aws" {
 }
 
 resource "aws_eip_association" "consul_server_aws" {
-  instance_id   = "${aws_instance.consul_server_aws.id}"
-  allocation_id = "${aws_eip.consul_server_aws.id}"
+  instance_id   = aws_instance.consul_server_aws.id
+  allocation_id = aws_eip.consul_server_aws.id
 }
 
 resource "aws_instance" "consul_server_aws" {
@@ -113,7 +112,6 @@ resource "aws_instance" "consul_server_aws" {
 
   vpc_security_group_ids      = [aws_vpc.default.default_security_group_id]
   subnet_id                   = aws_subnet.default[1].id
-  associate_public_ip_address = true
 
   user_data = templatefile("${path.module}/templates/consul-server.tpl", {
     dc_public_ip       = aws_eip.consul_server_aws.public_ip,
