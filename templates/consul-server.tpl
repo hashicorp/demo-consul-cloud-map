@@ -42,7 +42,7 @@ connect {
 enable_central_service_config = true
 advertise_addr = "$${LOCAL_IPV4}"
 
-%{ if dc_public_ip != "" }
+%{ if other_dc_public_ip != "" }
 primary_datacenter = "onprem"
 advertise_addr_wan = "${dc_public_ip}"
 retry_join_wan = ["${other_dc_public_ip}"]
@@ -73,6 +73,25 @@ Description=Consul Server
 After=syslog.target network.target
 [Service]
 ExecStart=/usr/local/bin/consul agent -config-file=/etc/consul/config.hcl
+ExecStop=/bin/sleep 5
+Restart=always
+[Install]
+WantedBy=multi-user.target
+EOF
+
+chmod 644 /etc/systemd/system/consul.service
+
+systemctl start consul.service
+
+# Setup systemd for gateway
+cat << EOF > /etc/systemd/system/consul-gateway.service
+[Unit]
+Description=Consul Mesh Gateway
+After=syslog.target network.target
+[Service]
+Environment=CONSUL_HTTP_ADDR=$${LOCAL_IPV4}:8500
+Environment=CONSUL_GRPC_ADDR=$${LOCAL_IPV4}:8502
+ExecStart=/usr/local/bin/consul connect envoy -mesh-gateway -register -address $${LOCAL_IPV4}:8443 -wan-address ${dc_public_ip}:8443
 ExecStop=/bin/sleep 5
 Restart=always
 [Install]
