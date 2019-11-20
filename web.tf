@@ -23,7 +23,12 @@ resource "aws_instance" "web_onprem" {
   subnet_id                   = aws_subnet.default[0].id
   associate_public_ip_address = true
 
-  user_data = templatefile("${path.module}/templates/web.tpl", { dc = "onprem", use_proxy = true, consul_cluster_addr = aws_instance.consul_server_onprem.private_ip, shared_services_private_ip = aws_instance.shared_services.private_ip })
+  user_data = templatefile("${path.module}/templates/web.tpl", {
+    dc                         = "onprem",
+    use_proxy                  = true,
+    consul_cluster_addr        = aws_instance.consul_server_onprem.private_ip,
+    shared_services_private_ip = aws_instance.shared_services.private_ip
+  })
 
   tags = {
     Name     = "Web"
@@ -40,7 +45,12 @@ resource "aws_instance" "web_aws" {
   subnet_id                   = aws_subnet.default[1].id
   associate_public_ip_address = true
 
-  user_data = templatefile("${path.module}/templates/web.tpl", { dc = "aws", use_proxy = true, consul_cluster_addr = aws_instance.consul_server_aws.private_ip, shared_services_private_ip = aws_instance.shared_services.private_ip })
+  user_data = templatefile("${path.module}/templates/web.tpl", {
+    dc                         = "aws",
+    use_proxy                  = true,
+    consul_cluster_addr        = aws_instance.consul_server_aws.private_ip,
+    shared_services_private_ip = aws_instance.shared_services.private_ip
+  })
 
   tags = {
     Name     = "Web"
