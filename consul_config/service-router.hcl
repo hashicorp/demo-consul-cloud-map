@@ -16,6 +16,7 @@ routes = [
 
     destination {
       service = "api"
+      datacenter = "aws"
     }
 
   },
@@ -28,7 +29,7 @@ routes = [
 
     destination {
       service        = "api"
-      service_subset = "v2"
+      datacenter     = "onprem"
     }
   },
 ]

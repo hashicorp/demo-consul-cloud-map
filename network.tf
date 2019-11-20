@@ -67,6 +67,16 @@ resource "aws_security_group_rule" "allow_consul_wan_raft" {
   security_group_id = aws_vpc.default.default_security_group_id
 }
 
+resource "aws_security_group_rule" "allow_consul_mesh_gateway" {
+  type        = "ingress"
+  from_port   = 8443
+  to_port     = 8443
+  protocol    = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+
+  security_group_id = aws_vpc.default.default_security_group_id
+}
+
 resource "aws_security_group_rule" "allow_fake_service" {
   type        = "ingress"
   from_port   = 9090

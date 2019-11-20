@@ -14,4 +14,3 @@ we want to _canary_ 10% of traffic to the API on AWS and 90% back to the legacy 
 
 In order to use a service mesh to do this, we need to federate the datacenters with Consul.
 
-## Federate Consul datacenter

@@ -13,7 +13,8 @@ server on AWS and installing a Consul agent on the Web and API EC2 instances.
 ![Corporate datacenter and AWS with web, api, and Consul servers](images/stage3/architecture.png)
 
 In order to maintain the connection to the onprem database, we use AWS Cloud Map to
-resolve to `database.example.terraform` from the API service on AWS.
+resolve to `database.example.terraform` from the API service on AWS. For additional visibility between
+onprem and AWS, we need to stretch our mesh by federating the datacenters.
 
 ## Update API Service on AWS
 
@@ -114,4 +115,24 @@ When we examing the traces, we can see that our spans reflect the different data
 
 ![Jaeger interface showing one trace going through Web and API on AWS versus previously Web on AWS](images/stage3/tracing.png)
 
-Next, how do we gradually cut over to the API on AWS?
+## Stretch the Mesh between OnPrem and AWS
+
+Let's stretch the mesh by federating between datacenters with Consul. Consul configuration
+uses WAN gossip to communicate between "datacenters", an entity representating its own
+network. We can set it up over a VPN or public internet. We add the following three lines
+to the Consul server configuration.
+
+```hcl
+primary_datacenter = "onprem"
+advertise_addr_wan = "${dc_public_ip}"
+retry_join_wan = ["${other_dc_public_ip}"]
+```
+
+Notice we add the public IP address of our Consul server and the public IP address
+of the other Consul server in the other datacenter. When we restart Consul,
+we can tell the federation works when the Consul UI dropdown indicates both "onprem"
+and "aws" datacenters.
+
+![Consul interface with AWS and OnPrem datacenters](images/stage3/federated.png)
+
+Next, we will examine how to manage traffic between onprem and AWS.
