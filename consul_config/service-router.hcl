@@ -15,8 +15,7 @@ routes = [
     }
 
     destination {
-      service = "api"
-      datacenter = "aws"
+      service = "api-on-aws"
     }
 
   },
@@ -29,7 +28,6 @@ routes = [
 
     destination {
       service        = "api"
-      datacenter     = "onprem"
     }
   },
 ]

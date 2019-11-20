@@ -1,13 +1,12 @@
 kind = "service-splitter"
 name = "api"
-
 splits = [
   {
-    weight = 100,
-    service_subset = "v1"
+    weight = 50
+    service = "api-onprem"
   },
   {
-    weight = 0,
-    service_subset = "v2"
-  }
+    weight  = 50
+    service = "api-on-aws"
+  },
 ]

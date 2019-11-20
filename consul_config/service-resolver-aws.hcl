@@ -1,6 +1,6 @@
 kind = "service-resolver"
-name = "api"
+name = "api-on-aws"
 redirect {
   service    = "api"
-  datacenter = "onprem"
+  datacenter = "aws"
 }
