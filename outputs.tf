@@ -36,7 +36,7 @@ output "namespace_id" {
 }
 
 output "service_id" {
-  value = aws_service_discovery_service.example.id
+  value = aws_service_discovery_service.api_on_aws.id
 }
 
 output "instance_id" {
