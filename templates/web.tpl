@@ -138,7 +138,7 @@ After=syslog.target network.target
 [Service]
 Environment="MESSAGE=Web ${dc}"
 Environment="NAME=Web (${dc})"
-Environment=UPSTREAM_URIS=%{ if use_proxy }http://localhost:9092%{ else }http://api-on-aws.service.consul:9090%{ endif }
+Environment=UPSTREAM_URIS=%{ if use_proxy }http://localhost:9092%{ else }http://${api_endpoint}:9090%{ endif }
 Environment=TRACING_ZIPKIN=http://${shared_services_private_ip}:9411
 ExecStart=/usr/local/bin/fake-service
 ExecStop=/bin/sleep 5
