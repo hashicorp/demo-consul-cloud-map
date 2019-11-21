@@ -18,7 +18,7 @@ open:
 	open http://$(shell terraform output consul_server_aws):8500
 
 register-api:
-	aws servicediscovery register-instance --service-id %service_id% --instance-id %id% --attributes AWS_INSTANCE_IPV4=54.20.10.1,stage=beta,version=1.0,active=yes
+	aws servicediscovery register-instance --service-id $(shell terraform output service_id) --instance-id $(shell terraform output instance_id) --attributes AWS_INSTANCE_IPV4=$(shell terraform output api_aws),active=yes
 
 clean:
 	bash delete-cloud-map.sh
