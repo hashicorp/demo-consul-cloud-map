@@ -24,7 +24,7 @@ resource "aws_appmesh_virtual_node" "api" {
         path                = "/health"
         healthy_threshold   = 2
         unhealthy_threshold = 2
-        timeout_millis      = 1000
+        timeout_millis      = 2000
         interval_millis     = 10000
       }
     }
