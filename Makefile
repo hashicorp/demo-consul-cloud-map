@@ -10,7 +10,6 @@ split:
 	CONSUL_HTTP_ADDR=http://$(shell terraform output consul_server_aws):8500 consul config write consul_config/service-resolver-onprem.hcl
 	CONSUL_HTTP_ADDR=http://$(shell terraform output consul_server_aws):8500 consul config write consul_config/service-resolver-aws.hcl
 	CONSUL_HTTP_ADDR=http://$(shell terraform output consul_server_aws):8500 consul config write consul_config/service-splitter.hcl
-	CONSUL_HTTP_ADDR=http://$(shell terraform output consul_server_aws):8500 consul config write consul_config/service-router.hcl
 
 open:
 	open http://$(shell terraform output shared_services):16686
