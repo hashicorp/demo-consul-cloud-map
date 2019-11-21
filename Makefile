@@ -23,8 +23,8 @@ register-api:
 	aws servicediscovery register-instance --service-id $$(terraform output service_id) --instance-id $$(terraform output instance_id) --attributes AWS_INSTANCE_IPV4=$$(terraform output api_aws),AWS_INSTANCE_PORT=9090
 
 test:
-	ssh -i key.pem ubuntu@$$(terraform output tester) 'curl localhost:9092 | jq'
-	ssh -i key.pem ubuntu@$$(terraform output tester) 'curl -H "datacenter:aws" localhost:9092 | jq'
+	ssh -i key.pem ubuntu@$$(terraform output tester) 'curl -s localhost:9092'
+	ssh -i key.pem ubuntu@$$(terraform output tester) 'curl -s -H "datacenter:aws" localhost:9092'
 
 clean:
 	bash delete-cloud-map.sh
