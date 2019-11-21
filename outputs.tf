@@ -26,6 +26,10 @@ output "database" {
   value = aws_instance.database.public_ip
 }
 
+output "tester" {
+  value = aws_instance.tester.public_ip
+}
+
 output "private_key" {
   sensitive = true
   value     = tls_private_key.deployer.private_key_pem
