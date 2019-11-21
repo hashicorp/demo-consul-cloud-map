@@ -1,6 +1,6 @@
 #!/bin/bash
 
-apt-get update && apt-get install -y unzip
+apt-get update && apt-get install -y unzip jq
 
 # Get internal IP
 LOCAL_IPV4=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
