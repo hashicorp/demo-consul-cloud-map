@@ -8,8 +8,8 @@ resource "aws_instance" "api_onprem" {
   associate_public_ip_address = true
 
   user_data = templatefile("${path.module}/templates/api.tpl", {
-    dc = "onprem", use_proxy = true,
-    consul_cluster_addr = aws_instance.consul_server_onprem.private_ip,
+    dc                         = "onprem", use_proxy = true,
+    consul_cluster_addr        = aws_instance.consul_server_onprem.private_ip,
     shared_services_private_ip = aws_instance.shared_services.private_ip
   })
 
@@ -28,9 +28,9 @@ resource "aws_instance" "api_aws" {
   subnet_id                   = aws_subnet.default[1].id
   associate_public_ip_address = true
 
-  user_data = templatefile("${path.module}/templates/api.tpl", { 
-    dc = "aws", use_proxy = false,
-    consul_cluster_addr = aws_instance.consul_server_aws.private_ip,
+  user_data = templatefile("${path.module}/templates/api.tpl", {
+    dc                         = "aws", use_proxy = false,
+    consul_cluster_addr        = aws_instance.consul_server_aws.private_ip,
     shared_services_private_ip = aws_instance.shared_services.private_ip
   })
 
