@@ -106,7 +106,7 @@ Description=Payment
 After=syslog.target network.target
 [Service]
 Environment="MESSAGE=record written"
-Environment=NAME=Database-onprem
+Environment="NAME=Database (onprem)"
 Environment=TRACING_ZIPKIN=http://${shared_services_private_ip}:9411
 ExecStart=/usr/local/bin/fake-service
 ExecStop=/bin/sleep 5

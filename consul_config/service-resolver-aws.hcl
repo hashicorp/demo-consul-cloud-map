@@ -1,6 +1,5 @@
 kind = "service-resolver"
 name = "api-on-aws"
 redirect {
-  service    = "api"
-  datacenter = "aws"
+  service    = "api-on-aws"
 }

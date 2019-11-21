@@ -113,6 +113,21 @@ systemctl start consul.service
 systemctl start consul-envoy.service
 %{ endif }
 
+# Setup DNS
+cat << EOF > /etc/systemd/resolved.conf
+[Resolve]
+DNS=127.0.0.1
+#FallbackDNS=
+Domains=~consul
+#LLMNR=no
+#MulticastDNS=no
+#DNSSEC=no
+#Cache=yes
+#DNSStubListener=yes
+EOF
+
+systemctl restart systemd-resolved
+
 # Setup systemd Web service
 cat << EOF > /etc/systemd/system/web.service
 [Unit]
@@ -120,8 +135,8 @@ Description=Web
 After=syslog.target network.target
 [Service]
 Environment="MESSAGE=Web ${dc}"
-Environment=NAME=Web-${dc}
-Environment=UPSTREAM_URIS=%{ if use_proxy }http://localhost:9092%{ else }http://api.example.terraform:9090%{ endif }
+Environment="NAME=Web (${dc})"
+Environment=UPSTREAM_URIS=%{ if use_proxy }http://localhost:9092%{ else }http://api-on-aws.service.consul:9090%{ endif }
 Environment=TRACING_ZIPKIN=http://${shared_services_private_ip}:9411
 ExecStart=/usr/local/bin/fake-service
 ExecStop=/bin/sleep 5
