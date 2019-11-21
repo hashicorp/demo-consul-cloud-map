@@ -47,7 +47,7 @@ resource "aws_instance" "web_aws" {
 
   user_data = templatefile("${path.module}/templates/web.tpl", {
     dc                         = "aws",
-    use_proxy                  = true,
+    use_proxy                  = false,
     consul_cluster_addr        = aws_instance.consul_server_aws.private_ip,
     shared_services_private_ip = aws_instance.shared_services.private_ip
   })
