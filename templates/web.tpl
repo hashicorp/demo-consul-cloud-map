@@ -127,6 +127,8 @@ Domains=~consul
 EOF
 
 systemctl restart systemd-resolved
+iptables -t nat -A OUTPUT -d localhost -p udp -m udp --dport 53 -j REDIRECT --to-ports 8600
+iptables -t nat -A OUTPUT -d localhost -p tcp -m tcp --dport 53 -j REDIRECT --to-ports 8600
 
 # Setup systemd Web service
 cat << EOF > /etc/systemd/system/web.service

@@ -15,10 +15,9 @@ open:
 	open http://$(shell terraform output shared_services):16686
 	open http://$(shell terraform output web_onprem):9090/ui
 	open http://$(shell terraform output consul_server_onprem):8500
-	open http://$(shell terraform output consul_server_aws):8500
 
 register-api:
-	aws servicediscovery register-instance --service-id $(shell terraform output service_id) --instance-id $(shell terraform output instance_id) --attributes AWS_INSTANCE_IPV4=$(shell terraform output api_aws),active=yes
+	aws servicediscovery register-instance --service-id $(shell terraform output service_id) --instance-id $(shell terraform output instance_id) --attributes AWS_INSTANCE_IPV4=$(shell terraform output api_aws),AWS_INSTANCE_PORT=9090
 
 clean:
 	bash delete-cloud-map.sh
