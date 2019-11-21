@@ -18,6 +18,14 @@ output "api_onprem" {
   value = aws_instance.api_onprem.public_ip
 }
 
+output "api_aws" {
+  value = aws_instance.api_aws.public_ip
+}
+
+output "api_aws_id" {
+  value = aws_instance.api_aws.id
+}
+
 output "database" {
   value = aws_instance.database.public_ip
 }

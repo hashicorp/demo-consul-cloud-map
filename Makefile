@@ -8,6 +8,7 @@ key:
 split:
 	CONSUL_HTTP_ADDR=http://$(shell terraform output consul_server_aws):8500 consul config write consul_config/service-defaults.hcl
 	CONSUL_HTTP_ADDR=http://$(shell terraform output consul_server_aws):8500 consul config write consul_config/service-resolver-aws.hcl
+	CONSUL_HTTP_ADDR=http://$(shell terraform output consul_server_aws):8500 consul config write consul_config/service-router.hcl
 	CONSUL_HTTP_ADDR=http://$(shell terraform output consul_server_aws):8500 consul config write consul_config/service-splitter.hcl
 
 open:
@@ -16,6 +17,8 @@ open:
 	open http://$(shell terraform output consul_server_onprem):8500
 	open http://$(shell terraform output consul_server_aws):8500
 
+register-api:
+	aws servicediscovery register-instance --service-id %service_id% --instance-id %id% --attributes AWS_INSTANCE_IPV4=54.20.10.1,stage=beta,version=1.0,active=yes
 
 clean:
 	bash delete-cloud-map.sh

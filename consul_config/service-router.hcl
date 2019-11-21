@@ -7,7 +7,7 @@ routes = [
       http {
         header = [
           {
-            name  = "location"
+            name  = "datacenter"
             exact = "aws"
           },
         ]
