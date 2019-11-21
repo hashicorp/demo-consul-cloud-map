@@ -40,5 +40,6 @@ output "service_id" {
 }
 
 output "instance_id" {
-  value = aws_instance.api_aws.id
+  sensitive = true
+  value     = aws_instance.api_aws.id
 }
