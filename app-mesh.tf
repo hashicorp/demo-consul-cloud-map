@@ -1,5 +1,5 @@
 resource "aws_appmesh_mesh" "example" {
-  name = "example.terraform"
+  name = "example"
 }
 
 resource "aws_appmesh_virtual_node" "api" {
