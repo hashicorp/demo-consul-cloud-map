@@ -17,7 +17,7 @@ web-traffic:
 open:
 	open http://$$(terraform output shared_services):16686
 	open http://$$(terraform output web_onprem):9090/ui
-	open http://$$(terraform output consul_server_onprem):8500
+	open http://$$(terraform output consul_server_onprem):8500/ui/onprem
 
 register-api:
 	aws servicediscovery register-instance --service-id $$(terraform output service_id) --instance-id $$(terraform output instance_id) --attributes AWS_INSTANCE_IPV4=$$(terraform output api_aws),AWS_INSTANCE_PORT=9090
