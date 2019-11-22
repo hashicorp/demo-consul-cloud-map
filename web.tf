@@ -25,7 +25,7 @@ resource "aws_instance" "web_onprem" {
 
   user_data = templatefile("${path.module}/templates/web.tpl", {
     dc                         = "onprem",
-    use_proxy                  = false,
+    use_proxy                  = true,
     consul_cluster_addr        = aws_instance.consul_server_onprem.private_ip,
     shared_services_private_ip = aws_instance.shared_services.private_ip
     api_endpoint               = "api-on-aws.service.consul"
@@ -38,6 +38,7 @@ resource "aws_instance" "web_onprem" {
 }
 
 resource "aws_instance" "web_aws" {
+  count         = var.enable_web_on_aws ? 1 : 0
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
   key_name      = aws_key_pair.deployer.key_name

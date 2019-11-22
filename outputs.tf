@@ -14,6 +14,9 @@ output "web_onprem" {
   value = aws_instance.web_onprem.public_ip
 }
 
+output "web_aws" {
+  value = var.enable_web_on_aws ? aws_instance.web_aws[0].public_ip : ""
+}
 
 output "api_onprem" {
   value = aws_instance.api_onprem.public_ip
