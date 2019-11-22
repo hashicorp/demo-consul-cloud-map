@@ -1,6 +1,8 @@
 # A/B test
 kind = "service-router"
+
 name = "web"
+
 routes = [
   {
     match {
@@ -17,7 +19,6 @@ routes = [
     destination {
       service = "web-on-aws"
     }
-
   },
   {
     match {
@@ -27,7 +28,7 @@ routes = [
     }
 
     destination {
-      service        = "web"
+      service = "web"
     }
   },
 ]

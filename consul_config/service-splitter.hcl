@@ -1,8 +1,10 @@
 kind = "service-splitter"
+
 name = "api"
+
 splits = [
   {
-    weight = 100
+    weight  = 100
     service = "api"
   },
   {
