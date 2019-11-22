@@ -35,7 +35,7 @@ resource "aws_instance" "api_aws" {
     use_proxy                  = false,
     consul_cluster_addr        = aws_instance.consul_server_aws.private_ip,
     shared_services_private_ip = aws_instance.shared_services.private_ip,
-    error_rate                 = 0.5
+    error_rate                 = 0.0
   })
 
   tags = {
