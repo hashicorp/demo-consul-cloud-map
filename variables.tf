@@ -13,5 +13,5 @@ variable "private_subnets" {
 }
 
 variable "enable_web_on_aws" {
-  default = false
+  default = true
 }
