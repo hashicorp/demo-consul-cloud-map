@@ -32,7 +32,7 @@ resource "aws_instance" "api_aws" {
 
   user_data = templatefile("${path.module}/templates/api.tpl", {
     dc                         = "aws",
-    use_proxy                  = false,
+    use_proxy                  = var.enable_mesh_for_api_on_aws,
     consul_cluster_addr        = aws_instance.consul_server_aws.private_ip,
     shared_services_private_ip = aws_instance.shared_services.private_ip,
     error_rate                 = var.fix_api_on_aws ? 0.0 : 0.5

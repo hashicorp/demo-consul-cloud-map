@@ -25,7 +25,7 @@ resource "aws_instance" "web_onprem" {
 
   user_data = templatefile("${path.module}/templates/web.tpl", {
     dc                         = "onprem",
-    use_proxy                  = var.enable_service_mesh_on_aws,
+    use_proxy                  = true,
     consul_cluster_addr        = aws_instance.consul_server_onprem.private_ip,
     shared_services_private_ip = aws_instance.shared_services.private_ip
     api_endpoint               = "api-on-aws.service.consul"
