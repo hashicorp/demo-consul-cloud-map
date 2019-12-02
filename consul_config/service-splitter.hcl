@@ -4,11 +4,11 @@ name = "api"
 
 splits = [
   {
-    weight  = 0
+    weight  = 100
     service = "api"
   },
   {
-    weight  = 100
+    weight  = 0
     service = "api-on-aws"
   },
 ]
