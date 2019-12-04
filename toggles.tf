@@ -1,5 +1,5 @@
 variable "fix_api_on_aws" {
-  default = false
+  default = true
 }
 
 variable "use_consul_proxy_for_api" {
